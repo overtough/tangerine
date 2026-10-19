@@ -63,8 +63,12 @@ Archive safety checks found 526 ZIP entries, 0 absolute/path-traversal
 members, and only relative JDK-license symlinks pointing to sibling files.
 `unzip -t` reported no compressed-data errors.
 
-The local environment did not provide a skill named `rea`; the analysis used
-the available static project/reverse-engineering workflow instead.
+The runtime does not have the `reverse-engineer-anything` skill installed and
+does not have an active REA MCP registration. The official REA CLI fallback
+was nevertheless available through `npx -y rea-agents@latest` (CLI `6.7.0`),
+so its provider-neutral artifact inventory and dyld-resolution passes are
+included below. Native macOS-provider operations remained unavailable in the
+Debian worker.
 
 ### Static techniques used
 
@@ -78,10 +82,40 @@ the available static project/reverse-engineering workflow instead.
 - inspection of Java class-file constant strings for conversion limits and
   rejection conditions;
 - offline inspection of the bundled JavaScript and Perl bridges;
+- REA artifact inventory and static dyld load-path resolution;
 - syntax/integrity checks implemented in `tools/verify.py`.
 
 No disassembler output, UI automation, process tracing, packet capture, or
 macOS dynamic execution is represented as completed evidence.
+
+### REA supplemental static pass
+
+The provider-neutral REA artifact inspection completed without executing the
+bundle. Evidence `ev_c2cfe9785937194a451b77fa19c8038a875da7685f3e388a724abc882141bf0e`
+retains inventory substep Evidence
+`ev_1198037dda3db47e272cdf035d828cd1d2934b29e847e6b8daa53067312bb4b4` for
+the extracted app. It reports a root SHA-256 of
+`889b6780b103e4eeddb31b3ce0d0f5708e94373eae4b66df1319a42ebcdadb35`, graph
+SHA-256 `bf48018752108445370fe666d86ad9713607c4744e74b862924dbddb51b38123`,
+422 artifact nodes, 525 path occurrences, and 488 graph edges. The inventory
+coverage is complete within that inventory substep; it is not a claim about
+runtime loading or format semantics.
+
+REA's execution-free dyld resolver also completed for every detected
+executable architecture. Evidence
+`ev_1c61d2220a8edcc3f91da3b30dd18dd665d4489dc81cd61963a3aff6233f3524`
+covered seven process roots, nine parsed images, and 95 load edges with
+complete static coverage. It found two derived
+`earlier-rpath-candidate-absent` findings for the arm64 and x86_64 Java
+launchers: the modeled search checks each launcher directory before its
+bundled `lib` fallback for `libjli.dylib`. This is a search-order hypothesis,
+not observed hijacking; REA does not evaluate code-signing library validation
+or execute dyld.
+
+The REA `inspect_plist` and `inspect_macho` CLI operations were attempted but
+returned `capability_unavailable`: their `native-macos` provider requires
+macOS. The independent Python plist and Mach-O parsing results in this report
+remain the supported observations for those facets in this worker.
 
 ## Package identity and build metadata
 

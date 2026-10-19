@@ -10,6 +10,8 @@ from __future__ import annotations
 import hashlib
 import plistlib
 import re
+import stat
+import subprocess
 import sys
 import zipfile
 from pathlib import Path, PurePosixPath
@@ -18,6 +20,7 @@ from pathlib import Path, PurePosixPath
 ROOT = Path(__file__).resolve().parents[1]
 REPORT = ROOT / "reports" / "tangerine-reverse-engineering.md"
 APP = ROOT / "reverse-engineering" / "Tangerine.app"
+COLLECTOR = ROOT / "tools" / "macos_validate.sh"
 
 
 def fail(message: str) -> None:
@@ -83,6 +86,7 @@ def check_report() -> None:
         "# Tangerine reverse-engineering report",
         "## Executive summary",
         "## Architecture and components",
+        "### REA supplemental static pass",
         "## Security assessment",
         "## Limitations and next steps",
     ]
@@ -92,6 +96,49 @@ def check_report() -> None:
     if re.search(r"\bappl_[A-Za-z0-9]+\b", text):
         fail("report contains an unredacted RevenueCat API key")
     print(f"report ok: {REPORT.relative_to(ROOT)}")
+
+
+def check_collector() -> None:
+    if not COLLECTOR.is_file():
+        fail(f"missing macOS validation collector: {COLLECTOR.relative_to(ROOT)}")
+    if not (COLLECTOR.stat().st_mode & stat.S_IXUSR):
+        fail("macOS validation collector is not executable")
+
+    text = COLLECTOR.read_text(encoding="utf-8")
+    required_fragments = [
+        "#!/usr/bin/env bash",
+        "LAUNCH_MODE=0",
+        "--help",
+        "--launch",
+        "codesign",
+        "spctl",
+        "appl_[A-Za-z0-9]+",
+        "[REDACTED_REVENUECAT_KEY]",
+    ]
+    for fragment in required_fragments:
+        if fragment not in text:
+            fail(f"macOS validation collector is missing {fragment!r}")
+
+    if re.search(r"\b(?:kill|pkill|killall)\b", text):
+        fail("macOS validation collector contains a process-termination command")
+    if re.search(r"(?m)^\s*set\s+-[^\n]*e", text):
+        fail("macOS validation collector enables shell exit-on-error")
+    if re.search(r"\b(?:mktemp|tee)\b", text):
+        fail("macOS validation collector persists command output")
+
+    help_result = subprocess.run(
+        [str(COLLECTOR), "--help"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        timeout=5,
+        check=False,
+    )
+    if help_result.returncode != 0:
+        fail(f"macOS validation collector --help exited {help_result.returncode}")
+    if re.search(r"\bappl_[A-Za-z0-9]+\b", help_result.stdout + help_result.stderr):
+        fail("macOS validation collector help exposes a raw RevenueCat API key")
+    print(f"collector ok: {COLLECTOR.relative_to(ROOT)}")
 
 
 def main() -> int:
@@ -105,6 +152,7 @@ def main() -> int:
     else:
         print("archive check skipped: no attached Tangerine.zip is present")
     check_package()
+    check_collector()
     check_report()
     print("PASS: offline reverse-engineering checks completed without launching the app")
     return 0

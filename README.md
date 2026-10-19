@@ -46,6 +46,68 @@ docker build -t tangerine-re-analysis .
 docker run --rm tangerine-re-analysis
 ```
 
+## macOS validation handoff
+
+Run the remaining validation on an isolated Apple Silicon Mac running macOS
+13 or newer. The original `Tangerine.app` is not committed, so copy or restore
+it first, either at `reverse-engineering/Tangerine.app` or at another path.
+From the repository root:
+
+```sh
+chmod +x tools/macos_validate.sh
+./tools/macos_validate.sh --app /path/to/Tangerine.app
+```
+
+The default run is non-launching. It checks that the bundle and main
+executable exist, validates `Info.plist`, reports the executable format, and
+on macOS runs `codesign --verify`, `spctl --assess`, and signing identity and
+entitlement inspection. If `--app` is omitted, the collector uses
+`reverse-engineering/Tangerine.app` relative to the repository. Expected
+command failures are reported and the remaining checks still run; a check that
+cannot be confirmed gives the collector a nonzero exit status.
+
+To explicitly request a bounded observation, use `--launch`. The collector
+requests the app through macOS `open`, waits ten seconds, and reports whether a
+`Tangerine` process is visible. The wait can be set to a value from 1 through
+60 seconds:
+
+```sh
+./tools/macos_validate.sh --app /path/to/Tangerine.app --launch
+./tools/macos_validate.sh --app /path/to/Tangerine.app --launch --seconds 20
+```
+
+Launch mode is opt-in. The collector does not terminate or force-close the
+application, does not write a results file, and replaces every displayed value
+matching `appl_[A-Za-z0-9]+` before printing it. Close the app yourself after
+the observation if needed.
+
+The collector proves only the local bundle/signing observations that its
+commands report and, in launch mode, that a process was visible during the
+bounded observation. It does not prove conversion compatibility or cleanup,
+complete UI behavior, network or document-byte handling, StoreKit/RevenueCat
+offerings, purchase/restore behavior, or Intel compatibility. Those require
+separate hands-on macOS tests and should not be inferred from a successful
+collector run.
+
+## Optional REA static pass
+
+The report also records a provider-neutral REA pass. To reproduce those
+execution-free observations without changing client configuration, use the
+version-pinned CLI fallback from the repository root:
+
+```sh
+npx -y rea-agents@6.7.0 inspect-artifact \
+  reverse-engineering/Tangerine.app --format json > /tmp/tangerine-rea-artifact.json
+npx -y rea-agents@6.7.0 trace-dylib-resolution \
+  reverse-engineering/Tangerine.app --format json > /tmp/tangerine-rea-dyld.json
+```
+
+The artifact inventory and dyld resolver do not execute Tangerine. The native
+`inspect_plist` and `inspect_macho` REA operations require a macOS provider and
+therefore remain unavailable in this Linux worker. REA client setup was not
+applied: its dry-run plan would write global OpenCode configuration and a
+global skill, which requires explicit approval and a restart/reconnection.
+
 ## Deliverable
 
 Read `reports/tangerine-reverse-engineering.md`. It records evidence hashes,
