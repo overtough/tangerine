@@ -659,8 +659,12 @@ converter helpers. The reconstruction deliberately reports unsupported
 conversion backends instead of claiming behavior that the available REA and
 macOS evidence did not establish.
 
-The Linux worker has no Swift/Xcode toolchain, so the reconstruction has not
-been compiled here. A macOS build and visual comparison remain required.
+The Linux worker has no Swift/Xcode toolchain, so compilation cannot run in
+this worker. On October 20, 2026, the user-side Apple Silicon Mac completed
+both `swift build` and `swift run TangerineReplica` after the macOS 13
+availability fixes. This establishes native compilation on that Mac; no
+visual comparison, menu-bar observation, or representative conversion result
+was captured in that transcript.
 
 FFmpeg and cwebp carry sandbox-inherit entitlements. The embedded Java
 launcher carries sandbox inheritance plus `com.apple.security.cs.allow-jit`.

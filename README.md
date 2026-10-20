@@ -136,8 +136,11 @@ swift run TangerineReplica
 ```
 
 The current worker has no Swift or Xcode toolchain, so a native `swift build`
-check cannot run here. The portable `make test` command validates the
-reconstruction scaffold and the existing reverse-engineering checks.
+check cannot run here. The native build and `swift run TangerineReplica` were
+completed on the user's Apple Silicon Mac on October 20, 2026. Visual
+comparison and representative conversion workflows remain to be checked
+there. The portable `make test` command validates the reconstruction scaffold
+and the existing reverse-engineering checks.
 
 ## Deliverable
 
