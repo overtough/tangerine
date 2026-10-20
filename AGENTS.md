@@ -29,3 +29,4 @@
 - Keep the report evidence-based: distinguish observed artifact facts, static inferences, and unresolved runtime questions.
 - Preserve the pinned runtime, lockfiles, Dockerfile, README, and offline `make test` path so the repository remains rebuildable from a clean Linux machine.
 - Commit each verified working step with a concise conventional commit message.
+- Humanize every commit message: keep the conventional prefix, then use natural, specific language that explains the actual change or user-visible intent. Avoid generic, robotic, vague, or ticket-only wording.
