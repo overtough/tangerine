@@ -23,5 +23,5 @@ These rules apply to all AI agents operating within the Tangerine reverse-engine
 ## 4. Change Discipline & Documentation
 
 - **Evidence-Based Reporting**: Clearly distinguish between directly observed artifact facts, static inferences, and unresolved runtime questions.
-- **Conventional Commits**: Commit each verified working step with a concise conventional commit message (e.g., `feat: ...`, `fix: ...`, `docs: ...`, `chore: ...`).
+- **Commit Messages**: Commit each verified working step with a short, plain-language message that describes the actual change (for example, `updated the report`, `fixed entitlement output`, or `recorded launch observation`). Do not require conventional prefixes, ticket IDs, or robotic wording.
 - **Memory Continuity**: Consult and update `.agents/memory.md` when persistent context, project status, or major decisions change.

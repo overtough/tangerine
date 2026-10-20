@@ -25,7 +25,7 @@ Persistent state, established patterns, verified facts, and project notes for th
 ## Operational Conventions
 
 - Always run `make test` before completing tasks or committing changes.
-- Use conventional commits format (e.g., `feat:`, `fix:`, `docs:`, `chore:`).
+- Use short, plain-language commit messages that describe the actual change; conventional prefixes are not required.
 - Keep `.opencode/` and `reverse-engineering/Tangerine.app/` ignored and never commit them.
 
 ## Latest Validation State
@@ -36,3 +36,4 @@ Persistent state, established patterns, verified facts, and project notes for th
 - Commit `3a3e5b8` fixed the entitlement pipeline by keeping `codesign` stderr diagnostics separate from the XML sent to `plutil`.
 - The next runtime step is direct macOS observation of UI and representative conversion workflows, followed by targeted network and cleanup checks.
 - The report and memory update was verified with `make test`, `python3 -m py_compile tools/verify.py`, and `bash -n tools/macos_validate.sh`.
+- On October 20, 2026, the commit-message guidance in `.agents/rules/rules.md` was reconciled with `AGENTS.md`: use natural plain-language messages instead of requiring conventional prefixes.
