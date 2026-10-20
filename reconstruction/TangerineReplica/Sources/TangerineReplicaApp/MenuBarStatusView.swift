@@ -3,6 +3,7 @@ import SwiftUI
 
 struct MenuBarStatusView: View {
     @ObservedObject var model: ReplicaModel
+    @Environment(\.openWindow) private var openWindow
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -39,6 +40,12 @@ struct MenuBarStatusView: View {
             }
 
             Divider()
+
+            Button {
+                openWindow(id: "main")
+            } label: {
+                Label("Open Conversion Fan", systemImage: "circle.grid.cross")
+            }
 
             settingsMenuItem
 

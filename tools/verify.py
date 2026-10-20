@@ -186,6 +186,7 @@ def check_replica_scaffold() -> None:
         "RadialPetalShape",
         "OptionInspector",
         "Documented options",
+        "Open Conversion Fan",
         "image-annotate",
         "copy-files",
         "fileAction",
