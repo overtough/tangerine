@@ -37,3 +37,5 @@ Persistent state, established patterns, verified facts, and project notes for th
 - The next runtime step is direct macOS observation of UI and representative conversion workflows, followed by targeted network and cleanup checks.
 - The report and memory update was verified with `make test`, `python3 -m py_compile tools/verify.py`, and `bash -n tools/macos_validate.sh`.
 - On October 20, 2026, the commit-message guidance in `.agents/rules/rules.md` was reconciled with `AGENTS.md`: use natural plain-language messages instead of requiring conventional prefixes.
+- A native macOS SwiftUI clean-room reconstruction was added under `reconstruction/TangerineReplica/`; it recreates the menu-bar shell, welcome flow, fan UI, settings state, drag/drop state, progress/error states, and safe path-copy action, while explicitly leaving unverified converter backends disconnected.
+- Swift/Xcode are unavailable in the Linux worker, so the reconstruction is source-checked by `make test` but must be built and visually compared on macOS.

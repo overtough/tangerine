@@ -118,6 +118,27 @@ setup was not applied: its dry-run plan would write global OpenCode
 configuration and a global skill, which requires explicit approval and a
 restart/reconnection.
 
+## Native macOS reconstruction
+
+The clean-room SwiftUI reconstruction lives in
+`reconstruction/TangerineReplica/`. It targets macOS 13+, uses a native
+`MenuBarExtra`, and recreates the observed welcome flow, conversion fan,
+settings, drag/drop state, operation progress, and safe path-copy action.
+The original converter backends, purchase services, signing identity, and
+private client configuration are not copied. Unsupported conversions report
+that the backend is not connected instead of producing false output.
+
+Run it on the Apple Silicon Mac, not in this Linux worker:
+
+```sh
+cd reconstruction/TangerineReplica
+swift run TangerineReplica
+```
+
+The current worker has no Swift or Xcode toolchain, so a native `swift build`
+check cannot run here. The portable `make test` command validates the
+reconstruction scaffold and the existing reverse-engineering checks.
+
 ## Deliverable
 
 Read `reports/tangerine-reverse-engineering.md`. It records evidence hashes,

@@ -648,6 +648,20 @@ lists, inspect windows, or prove that either process was newly created by this
 invocation, so this is process-visibility evidence rather than proof of UI
 readiness, conversion behavior, cleanup, network behavior, or purchase flows.
 
+## Clean-room reconstruction status
+
+The repository now includes a native macOS SwiftUI reconstruction under
+`reconstruction/TangerineReplica/`. It is based on the observed menu-bar shell,
+welcome flow, conversion fan, recovered categories/actions, settings keys, and
+drag/drop state. It is not an exact binary clone and does not copy the shipped
+executable, signing identity, RevenueCat client configuration, or bundled
+converter helpers. The reconstruction deliberately reports unsupported
+conversion backends instead of claiming behavior that the available REA and
+macOS evidence did not establish.
+
+The Linux worker has no Swift/Xcode toolchain, so the reconstruction has not
+been compiled here. A macOS build and visual comparison remain required.
+
 FFmpeg and cwebp carry sandbox-inherit entitlements. The embedded Java
 launcher carries sandbox inheritance plus `com.apple.security.cs.allow-jit`.
 That JIT entitlement is expected for a bundled Java VM, but it increases the

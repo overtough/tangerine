@@ -21,6 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 REPORT = ROOT / "reports" / "tangerine-reverse-engineering.md"
 APP = ROOT / "reverse-engineering" / "Tangerine.app"
 COLLECTOR = ROOT / "tools" / "macos_validate.sh"
+REPLICA = ROOT / "reconstruction" / "TangerineReplica"
 
 
 def fail(message: str) -> None:
@@ -149,6 +150,42 @@ def check_collector() -> None:
     print(f"collector ok: {COLLECTOR.relative_to(ROOT)}")
 
 
+def check_replica_scaffold() -> None:
+    required_files = [
+        REPLICA / "Package.swift",
+        REPLICA / "README.md",
+        REPLICA / "Sources" / "TangerineReplicaApp" / "Models.swift",
+        REPLICA / "Sources" / "TangerineReplicaApp" / "MainView.swift",
+        REPLICA / "Sources" / "TangerineReplicaApp" / "SettingsView.swift",
+        REPLICA / "Sources" / "TangerineReplicaApp" / "TangerineReplicaApp.swift",
+    ]
+    for path in required_files:
+        if not path.is_file():
+            fail(f"missing replica scaffold file: {path.relative_to(ROOT)}")
+
+    package = (REPLICA / "Package.swift").read_text(encoding="utf-8")
+    source = "\n".join(
+        path.read_text(encoding="utf-8")
+        for path in required_files
+        if path.name != "Package.swift"
+    )
+    for fragment in [
+        ".macOS(.v13)",
+        "MenuBarExtra",
+        "ConversionAction",
+        "hasCompletedWelcome",
+        "conversionFanTheme",
+        "Copy Path",
+        "Backend not connected",
+    ]:
+        haystack = package if fragment == ".macOS(.v13)" else source
+        if fragment not in haystack:
+            fail(f"replica scaffold is missing {fragment!r}")
+    if re.search(r"\bappl_[A-Za-z0-9]+\b", source):
+        fail("replica scaffold contains an unredacted RevenueCat API key")
+    print(f"replica scaffold ok: {REPLICA.relative_to(ROOT)}")
+
+
 def main() -> int:
     archives = sorted(
         path
@@ -161,6 +198,7 @@ def main() -> int:
         print("archive check skipped: no attached Tangerine.zip is present")
     check_package()
     check_collector()
+    check_replica_scaffold()
     check_report()
     print("PASS: offline reverse-engineering checks completed without launching the app")
     return 0
