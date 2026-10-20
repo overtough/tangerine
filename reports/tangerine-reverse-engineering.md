@@ -609,9 +609,9 @@ com.apple.security.network.client = true
 
 ### User-run macOS signature validation
 
-The default, non-launching collector was run on an Apple Silicon Mac against
-the bundle at `reverse-engineering/Tangerine.app`. The user-provided output
-reported:
+The corrected default, non-launching collector was rerun on an Apple Silicon
+Mac against the bundle at `reverse-engineering/Tangerine.app`. The
+user-provided output reported:
 
 - `Info.plist` syntax valid and bundle identifier `com.th.Tangerine`;
 - a thin arm64 main executable;
@@ -621,7 +621,9 @@ reported:
 - Apple Mac OS Application Signing authority, team identifier `GTF45UH2VQ`,
   CodeDirectory `v=20500` with the runtime flag, and 462 sealed resources;
 - embedded entitlements matching the static extraction above: App Sandbox,
-  app-scoped bookmarks, user-selected read/write access, and network client.
+  app-scoped bookmarks, user-selected read/write access, and network client;
+- the entitlement XML parsed successfully after the collector separated
+  `codesign` diagnostics on stderr from entitlement XML on stdout.
 
 The reported CDHash was
 `a649af2fa1d7bdc1c5cfef3e42ee455b97c03d62`; the full SHA-256 CodeDirectory
@@ -771,7 +773,7 @@ report contains no raw RevenueCat key. They do not execute the application.
 | `make test` | Passed; archive/package/report checks completed |
 | `python3 -m py_compile tools/verify.py` | Passed |
 | `node --check` on `OfficePreview.js` and `PagesWriter.js` | Passed |
-| macOS `tools/macos_validate.sh` default run (user-supplied output) | Passed; signing and Gatekeeper checks succeeded; no launch was requested |
+| macOS `tools/macos_validate.sh` corrected default rerun (user-supplied output) | Passed; signing, Gatekeeper, and entitlement checks succeeded; no launch was requested |
 | `unzip -tq` on the attached archive | Passed |
 | Python ZIP integrity check for all PowerPoint JARs | Passed |
 | Python plist parsing for app/privacy/RevenueCat plists | Passed |
