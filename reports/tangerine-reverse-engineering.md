@@ -674,6 +674,13 @@ the reconstruction now creates an explicit AppKit `NSStatusItem` and anchors a
 SwiftUI `NSPopover` containing the fan to that status item. Native macOS
 compilation and icon visibility still need to be rechecked after this change.
 
+The attached runtime screenshot then showed the reconstruction rendering each
+petal as a translated rounded rectangle. That implementation made the fan look
+like a ring of large tiles and did not provide reliable radial hit regions. The
+fan renderer has been changed to shared-center radial petal shapes with wedge
+hit testing, paging for the larger recovered option catalog, and a documented
+option inspector for each selected conversion, tool, or file action.
+
 The Linux worker has no Swift/Xcode toolchain, so compilation cannot run in
 this worker. On October 20, 2026, the user-side Apple Silicon Mac completed
 both `swift build` and `swift run TangerineReplica` after the macOS 13

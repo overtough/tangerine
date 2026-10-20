@@ -17,6 +17,10 @@ struct MainView: View {
 
                     SelectionSummary(model: model)
 
+                    if model.selectedAction != nil {
+                        OptionInspector(model: model)
+                    }
+
                     if let notice = model.notice {
                         NoticeView(notice: notice)
                     }
@@ -44,7 +48,7 @@ struct MainView: View {
                         .disabled(model.isWorking || (model.selectedFiles.isEmpty && model.notice == nil))
                     }
 
-                    Text("Drop only local, accessible files. Conversion backends are intentionally separate from this clean-room UI reconstruction.")
+                    Text("Drag local files from Finder, then tap Shift, Command, or Control to choose a wheel.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
@@ -121,6 +125,42 @@ struct SelectionSummary: View {
         }
         .padding(14)
         .background(.quaternary.opacity(0.45), in: RoundedRectangle(cornerRadius: 14))
+    }
+}
+
+struct OptionInspector: View {
+    @ObservedObject var model: ReplicaModel
+
+    var body: some View {
+        if let action = model.selectedAction {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(alignment: .firstTextBaseline) {
+                    Label(action.title, systemImage: action.symbolName)
+                        .font(.subheadline.weight(.semibold))
+                    Spacer()
+                    Text(action.subtitle)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                Text("Documented options")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(model.fanTheme.accent)
+
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 150), spacing: 8)], spacing: 8) {
+                    ForEach(Array(action.optionSummary.enumerated()), id: \.offset) { _, option in
+                        Label(option, systemImage: "checkmark.circle")
+                            .font(.caption)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.vertical, 6)
+                            .padding(.horizontal, 8)
+                            .background(.quaternary.opacity(0.45), in: RoundedRectangle(cornerRadius: 8))
+                    }
+                }
+            }
+            .padding(14)
+            .background(.quaternary.opacity(0.45), in: RoundedRectangle(cornerRadius: 14))
+        }
     }
 }
 
@@ -208,15 +248,28 @@ struct NoticeView: View {
 struct FanView: View {
     @ObservedObject var model: ReplicaModel
     @Binding var isDropTargeted: Bool
+    @State private var page = 0
 
     private var actions: [ConversionAction] {
         model.activeWheel.map { model.actions(for: $0) } ?? ConversionAction.catalog
     }
 
+    private let pageSize = 8
+
+    private var visibleActions: ArraySlice<ConversionAction> {
+        let start = min(page * pageSize, max(actions.count - 1, 0))
+        let end = min(start + pageSize, actions.count)
+        return actions[start..<end]
+    }
+
+    private var pageCount: Int {
+        max(1, Int(ceil(Double(actions.count) / Double(pageSize))))
+    }
+
     var body: some View {
         GeometryReader { proxy in
             let center = CGPoint(x: proxy.size.width / 2, y: proxy.size.height / 2)
-            let radius = min(proxy.size.width, proxy.size.height) * 0.28
+            let canvas = min(proxy.size.width, proxy.size.height) * 0.92
 
             ZStack {
                 Circle()
@@ -224,19 +277,22 @@ struct FanView: View {
                     .frame(width: min(proxy.size.width, proxy.size.height) * 0.82)
                     .blur(radius: isDropTargeted ? 2 : 18)
 
-                ForEach(Array(actions.enumerated()), id: \.element.id) { index, action in
-                    let angle = (Double(index) / Double(actions.count)) * (Double.pi * 2) - (Double.pi / 2)
+                ForEach(Array(visibleActions.enumerated()), id: \.element.id) { index, action in
+                    let sector = (Double.pi * 2) / Double(max(visibleActions.count, 1))
+                    let angle = (Double(index) * sector) - (Double.pi / 2)
+                    let startAngle = Angle(radians: angle - sector * 0.5 + 0.045)
+                    let endAngle = Angle(radians: angle + sector * 0.5 - 0.045)
                     FanPetal(
                         action: action,
                         isSelected: model.selectedAction?.id == action.id,
-                        accent: model.fanTheme.accent
+                        accent: model.fanTheme.accent,
+                        startAngle: startAngle,
+                        endAngle: endAngle
                     ) {
                         model.select(action)
                     }
-                    .position(
-                        x: center.x + CGFloat(cos(angle)) * radius,
-                        y: center.y + CGFloat(sin(angle)) * radius
-                    )
+                    .frame(width: canvas, height: canvas)
+                    .position(center)
                 }
 
                 Circle()
@@ -266,6 +322,35 @@ struct FanView: View {
             }
         }
         .frame(height: 390)
+        .overlay(alignment: .bottom) {
+            if pageCount > 1 {
+                HStack(spacing: 12) {
+                    Button {
+                        page = max(0, page - 1)
+                    } label: {
+                        Image(systemName: "chevron.left")
+                    }
+                    .buttonStyle(.bordered)
+                    .disabled(page == 0)
+
+                    Text("\(page + 1) / \(pageCount)")
+                        .font(.caption.monospacedDigit())
+                        .foregroundStyle(.secondary)
+
+                    Button {
+                        page = min(pageCount - 1, page + 1)
+                    } label: {
+                        Image(systemName: "chevron.right")
+                    }
+                    .buttonStyle(.bordered)
+                    .disabled(page >= pageCount - 1)
+                }
+                .padding(.bottom, 2)
+            }
+        }
+        .onChange(of: model.activeWheel) { _ in
+            page = 0
+        }
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Conversion fan")
     }
@@ -275,27 +360,69 @@ struct FanPetal: View {
     let action: ConversionAction
     let isSelected: Bool
     let accent: Color
+    let startAngle: Angle
+    let endAngle: Angle
     let onSelect: () -> Void
 
     var body: some View {
         Button(action: onSelect) {
-            VStack(spacing: 5) {
-                Image(systemName: action.symbolName)
-                    .font(.title3.weight(.semibold))
-                Text(action.title)
-                    .font(.caption.weight(.semibold))
-                Text(action.modifier)
-                    .font(.caption2.monospaced())
-                    .foregroundStyle(.secondary)
+            GeometryReader { proxy in
+                let midAngle = (startAngle.radians + endAngle.radians) / 2
+                let labelRadius = min(proxy.size.width, proxy.size.height) * 0.35
+                ZStack {
+                    RadialPetalShape(startAngle: startAngle, endAngle: endAngle)
+                        .fill(isSelected ? accent.opacity(0.26) : Color.primary.opacity(0.08))
+                        .overlay {
+                            RadialPetalShape(startAngle: startAngle, endAngle: endAngle)
+                                .stroke(isSelected ? accent : Color.primary.opacity(0.16), lineWidth: isSelected ? 2.5 : 1)
+                        }
+
+                    VStack(spacing: 4) {
+                        Image(systemName: action.symbolName)
+                            .font(.title3.weight(.semibold))
+                        Text(action.title)
+                            .font(.caption.weight(.semibold))
+                            .lineLimit(2)
+                            .multilineTextAlignment(.center)
+                    }
+                    .frame(width: 94)
+                    .foregroundStyle(isSelected ? accent : .primary)
+                    .position(
+                        x: proxy.size.width / 2 + CGFloat(cos(midAngle)) * labelRadius,
+                        y: proxy.size.height / 2 + CGFloat(sin(midAngle)) * labelRadius
+                    )
+                }
             }
-            .frame(width: 118, height: 78)
-            .background(isSelected ? accent.opacity(0.18) : Color.primary.opacity(0.045), in: RoundedRectangle(cornerRadius: 18))
-            .overlay {
-                RoundedRectangle(cornerRadius: 18)
-                    .stroke(isSelected ? accent : Color.primary.opacity(0.10), lineWidth: isSelected ? 2 : 1)
-            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .buttonStyle(.plain)
+        .contentShape(RadialPetalShape(startAngle: startAngle, endAngle: endAngle))
         .help("\(action.title) — \(action.subtitle)")
+    }
+}
+
+struct RadialPetalShape: Shape {
+    var startAngle: Angle = .degrees(-112)
+    var endAngle: Angle = .degrees(-68)
+    var innerRadius: CGFloat = 74
+    var outerRadius: CGFloat = 178
+
+    func path(in rect: CGRect) -> Path {
+        let center = CGPoint(x: rect.midX, y: rect.midY)
+        let start = startAngle.radians
+        let end = endAngle.radians
+        let innerStart = point(center: center, radius: innerRadius, angle: start)
+        let outerEnd = point(center: center, radius: outerRadius, angle: end)
+        var path = Path()
+        path.move(to: innerStart)
+        path.addArc(center: center, radius: innerRadius, startAngle: startAngle, endAngle: endAngle, clockwise: false)
+        path.addLine(to: outerEnd)
+        path.addArc(center: center, radius: outerRadius, startAngle: endAngle, endAngle: startAngle, clockwise: true)
+        path.closeSubpath()
+        return path
+    }
+
+    private func point(center: CGPoint, radius: CGFloat, angle: Double) -> CGPoint {
+        CGPoint(x: center.x + CGFloat(cos(angle)) * radius, y: center.y + CGFloat(sin(angle)) * radius)
     }
 }

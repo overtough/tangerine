@@ -53,18 +53,17 @@ final class DragGestureMonitor {
             } else {
                 model.beginExternalDrag(urls, modifier: modifier)
                 print("[TangerineReplica] drag shortcut monitor started")
+                overlay.show(at: NSEvent.mouseLocation)
             }
-            overlay.show(at: NSEvent.mouseLocation)
 
         case .flagsChanged:
             guard model.isDraggingFiles else { return }
             model.updateExternalDragModifier(DragModifier.from(flags: event.modifierFlags))
-            overlay.update(at: NSEvent.mouseLocation)
 
         case .leftMouseUp:
             guard model.isDraggingFiles else { return }
             model.finishExternalDrag()
-            overlay.update(at: NSEvent.mouseLocation)
+            overlay.hide()
 
         default:
             break

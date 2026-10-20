@@ -124,7 +124,8 @@ The clean-room SwiftUI reconstruction lives in
 `reconstruction/TangerineReplica/`. It targets macOS 13+, uses a native AppKit
 `NSStatusItem` with a SwiftUI popover, and recreates the observed welcome flow,
 global drag shortcut monitor, transient conversion fan, settings, operation
-progress, and safe path-copy action.
+progress, safe path-copy action, radial petal hit regions, and documented option
+inspection for the recovered conversion/tool/file-action catalog.
 The original converter backends, purchase services, signing identity, and
 private client configuration are not copied. Unsupported conversions report
 that the backend is not connected instead of producing false output.

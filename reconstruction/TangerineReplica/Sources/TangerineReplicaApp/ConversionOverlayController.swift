@@ -13,8 +13,8 @@ final class ConversionOverlayController {
     func show(at point: NSPoint) {
         if panel == nil {
             let panel = NSPanel(
-                contentRect: NSRect(x: 0, y: 0, width: 540, height: 620),
-                styleMask: [.borderless, .nonactivatingPanel],
+                contentRect: NSRect(x: 0, y: 0, width: 560, height: 760),
+                styleMask: [.borderless, .utilityWindow, .nonactivatingPanel],
                 backing: .buffered,
                 defer: false
             )
@@ -24,6 +24,10 @@ final class ConversionOverlayController {
             panel.isFloatingPanel = true
             panel.level = .statusBar
             panel.hidesOnDeactivate = false
+            panel.becomesKeyOnlyIfNeeded = true
+            panel.ignoresMouseEvents = false
+            panel.acceptsMouseMovedEvents = true
+            panel.isMovableByWindowBackground = false
             panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
             panel.contentViewController = NSHostingController(
                 rootView: ConversionOverlayView(model: model)
@@ -75,7 +79,12 @@ struct ConversionOverlayView: View {
             }
 
             FanView(model: model, isDropTargeted: $isDropTargeted)
-                .frame(width: 520, height: 440)
+                .frame(width: 520, height: 430)
+
+            if model.selectedAction != nil {
+                OptionInspector(model: model)
+                    .frame(maxHeight: 150)
+            }
 
             if !model.selectedFiles.isEmpty {
                 Text(model.selectedFileSummary)

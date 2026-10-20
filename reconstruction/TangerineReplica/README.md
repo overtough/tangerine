@@ -13,6 +13,11 @@ bundled helpers.
   Shift, Command, or Control to choose the Conversion, Tools, or Actions wheel.
 - Transient conversion-fan overlay that appears during the file drag instead of
   asking the user to drop files onto a permanent document window.
+- Radial petal rendering with real wedge hit regions rather than translated
+  overlapping tiles; clicking a petal selects it and opens its documented option
+  inspector.
+- Catalog entries for the recovered conversion formats, image/audio/video/PDF
+  tools, and file actions such as copy, move, terminal, AirDrop, and float.
 - File selection, action selection, progress/error states, and settings state.
 - Safe `Copy Path` action and explicit “backend not connected” states for
   conversion actions; it does not pretend to reproduce unverified conversion
