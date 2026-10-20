@@ -100,13 +100,21 @@ npx -y rea-agents@6.7.0 inspect-artifact \
   reverse-engineering/Tangerine.app --format json > /tmp/tangerine-rea-artifact.json
 npx -y rea-agents@6.7.0 trace-dylib-resolution \
   reverse-engineering/Tangerine.app --format json > /tmp/tangerine-rea-dyld.json
+npx -y rea-agents@6.7.0 analyze-javascript-application \
+  reverse-engineering/Tangerine.app/Contents/Resources \
+  --artifact-format directory \
+  --source-path OfficePreview.js --source-path PagesWriter.js \
+  --format json > /tmp/tangerine-rea-js.json
 ```
 
-The artifact inventory and dyld resolver do not execute Tangerine. The native
-`inspect_plist` and `inspect_macho` REA operations require a macOS provider and
-therefore remain unavailable in this Linux worker. REA client setup was not
-applied: its dry-run plan would write global OpenCode configuration and a
-global skill, which requires explicit approval and a restart/reconnection.
+The artifact inventory, dyld resolver, and selected JavaScript pass do not
+execute Tangerine. The JavaScript command intentionally selects only the two
+bridge files; it is not a complete application-wide JavaScript inventory. The
+native `inspect_plist` and `inspect_macho` REA operations require a macOS
+provider and therefore remain unavailable in this Linux worker. REA client
+setup was not applied: its dry-run plan would write global OpenCode
+configuration and a global skill, which requires explicit approval and a
+restart/reconnection.
 
 ## Deliverable
 

@@ -117,6 +117,28 @@ returned `capability_unavailable`: their `native-macos` provider requires
 macOS. The independent Python plist and Mach-O parsing results in this report
 remain the supported observations for those facets in this worker.
 
+REA's JavaScript application pass was also run against the two shipped bridge
+files `OfficePreview.js` and `PagesWriter.js`, and against no other resource
+files. Evidence
+`ev_3d29f71236ce5eb33181b20b576755de1ddf3cf68a16f2e9717038330321176c`
+retains the result. Both files were read and parsed as inert text, with no
+parse failures, 185,373 visited AST nodes, and 40000 retained semantic nodes.
+The selected-file summary found zero browser windows, preload entrypoints,
+context-bridge APIs, exposed API members, or IPC operations. That is evidence
+about these two selected files only, not proof that the native app has no
+JavaScript or IPC integration elsewhere.
+
+The pass emitted two **low-confidence endpoint candidates** from
+`PagesWriter.js`: `Metadata/Properties.plist` and
+`Metadata/BuildVersionHistory.plist`, both arising from a static `n.get`
+candidate. Their values look like local Pages package paths, and REA explicitly
+states that the receiver was not established and runtime execution was not
+observed. They are therefore not network destinations and do not change the
+report's conclusion that live network behavior remains unverified. The
+semantic graph also retained many unknowns and partial relation families due
+to dynamic JavaScript resolution; these are coverage limits, not findings of
+malicious behavior.
+
 ## Package identity and build metadata
 
 | Property | Recovered value |

@@ -87,6 +87,7 @@ def check_report() -> None:
         "## Executive summary",
         "## Architecture and components",
         "### REA supplemental static pass",
+        "REA's JavaScript application pass",
         "## Security assessment",
         "## Limitations and next steps",
     ]
