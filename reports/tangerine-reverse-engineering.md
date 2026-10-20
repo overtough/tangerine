@@ -681,6 +681,13 @@ fan renderer has been changed to shared-center radial petal shapes with wedge
 hit testing, paging for the larger recovered option catalog, and a documented
 option inspector for each selected conversion, tool, or file action.
 
+The same screenshot shows a Finder file still being dragged over a fan petal,
+including the macOS green-copy badge. That is the important selection path: the
+user does not click a petal during an active drag. The replica now registers a
+drag destination over the fan, highlights the wedge under the dragged file,
+and commits the highlighted option on release. The ordinary SwiftUI button path
+remains for preview/testing outside an active drag.
+
 The Linux worker has no Swift/Xcode toolchain, so compilation cannot run in
 this worker. On October 20, 2026, the user-side Apple Silicon Mac completed
 both `swift build` and `swift run TangerineReplica` after the macOS 13

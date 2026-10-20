@@ -385,9 +385,11 @@ final class ReplicaModel: ObservableObject {
     @Published var hasCompletedWelcome: Bool
     @Published var selectedFiles: [URL] = []
     @Published var selectedAction: ConversionAction?
+    @Published var highlightedAction: ConversionAction?
     @Published var activeModifier: DragModifier?
     @Published var activeWheel: WheelKind?
     @Published var isDraggingFiles = false
+    @Published var wheelPage = 0
     @Published var isWorking = false
     @Published var progress = 0.0
     @Published var statusMessage = "Drag files and tap a shortcut"
@@ -402,9 +404,11 @@ final class ReplicaModel: ObservableObject {
         hasCompletedWelcome = defaults.bool(forKey: "hasCompletedWelcome")
         fanTheme = FanTheme(rawValue: defaults.string(forKey: "conversionFanTheme") ?? "tangerine") ?? .tangerine
         soundsEnabled = defaults.object(forKey: "soundsAndHapticsEnabled") as? Bool ?? true
+        highlightedAction = nil
         activeModifier = nil
         activeWheel = nil
         isDraggingFiles = false
+        wheelPage = 0
     }
 
     func actions(for wheel: WheelKind) -> [ConversionAction] {
@@ -414,6 +418,18 @@ final class ReplicaModel: ObservableObject {
     var activeMenuActions: [ConversionAction] {
         guard let activeWheel else { return [] }
         return actions(for: activeWheel)
+    }
+
+    var wheelActions: [ConversionAction] {
+        activeWheel.map { actions(for: $0) } ?? ConversionAction.catalog
+    }
+
+    var visibleWheelActions: [ConversionAction] {
+        FanGeometry.visibleActions(wheelActions, page: wheelPage)
+    }
+
+    var wheelPageCount: Int {
+        FanGeometry.pageCount(for: wheelActions)
     }
 
     var selectedFileSummary: String {
@@ -453,9 +469,15 @@ final class ReplicaModel: ObservableObject {
         selectedFiles = localFiles
         activeModifier = modifier
         activeWheel = modifier?.wheelKind
-        let availableActions = activeWheel.map { actions(for: $0) } ?? ConversionAction.catalog
-        selectedAction = availableActions.first
-        statusMessage = activeWheel.map { "\($0.title) ready" } ?? "Drag files and tap a shortcut"
+        wheelPage = 0
+        highlightedAction = nil
+        if modifier == nil {
+            selectedAction = wheelActions.first
+            statusMessage = "Choose an option"
+        } else {
+            selectedAction = nil
+            statusMessage = activeWheel.map { "\($0.title) ready" } ?? "Drag files and tap a shortcut"
+        }
         notice = nil
     }
 
@@ -468,8 +490,10 @@ final class ReplicaModel: ObservableObject {
         guard isDraggingFiles else { return }
         activeModifier = modifier
         activeWheel = modifier?.wheelKind
+        wheelPage = 0
+        highlightedAction = nil
         if let activeWheel {
-            selectedAction = actions(for: activeWheel).first
+            selectedAction = nil
             statusMessage = "\(activeWheel.title) ready"
         } else {
             selectedAction = nil
@@ -477,8 +501,36 @@ final class ReplicaModel: ObservableObject {
         }
     }
 
+    func highlightAction(_ action: ConversionAction?) {
+        guard isDraggingFiles else { return }
+        highlightedAction = action
+        if let action {
+            statusMessage = "Ready to choose \(action.title)"
+        } else if let activeWheel {
+            statusMessage = "\(activeWheel.title) ready"
+        }
+    }
+
+    func commitExternalDrop() {
+        guard let highlightedAction else {
+            notice = OperationNotice(
+                level: .warning,
+                title: "Choose an option",
+                detail: "Move the dragged file over a fan petal before releasing it."
+            )
+            isDraggingFiles = false
+            return
+        }
+
+        selectedAction = highlightedAction
+        self.highlightedAction = nil
+        isDraggingFiles = false
+        runSelectedAction()
+    }
+
     func finishExternalDrag() {
         isDraggingFiles = false
+        highlightedAction = nil
     }
 
     func chooseFiles() {
@@ -517,6 +569,7 @@ final class ReplicaModel: ObservableObject {
 
     func select(_ action: ConversionAction) {
         selectedAction = action
+        highlightedAction = nil
         statusMessage = selectedFiles.isEmpty ? "Drag files and tap a shortcut" : "Selected \(action.title)"
         notice = nil
     }
@@ -581,9 +634,11 @@ final class ReplicaModel: ObservableObject {
     func resetSelection() {
         selectedFiles = []
         selectedAction = nil
+        highlightedAction = nil
         activeModifier = nil
         activeWheel = nil
         isDraggingFiles = false
+        wheelPage = 0
         progress = 0
         statusMessage = "Drag files and tap a shortcut"
         notice = nil

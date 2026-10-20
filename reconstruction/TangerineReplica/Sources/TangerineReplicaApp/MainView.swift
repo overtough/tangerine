@@ -248,22 +248,21 @@ struct NoticeView: View {
 struct FanView: View {
     @ObservedObject var model: ReplicaModel
     @Binding var isDropTargeted: Bool
-    @State private var page = 0
 
     private var actions: [ConversionAction] {
-        model.activeWheel.map { model.actions(for: $0) } ?? ConversionAction.catalog
-    }
-
-    private let pageSize = 8
-
-    private var visibleActions: ArraySlice<ConversionAction> {
-        let start = min(page * pageSize, max(actions.count - 1, 0))
-        let end = min(start + pageSize, actions.count)
-        return actions[start..<end]
+        model.wheelActions
     }
 
     private var pageCount: Int {
-        max(1, Int(ceil(Double(actions.count) / Double(pageSize))))
+        model.wheelPageCount
+    }
+
+    private var visibleActions: [ConversionAction] {
+        model.visibleWheelActions
+    }
+
+    private var highlightedID: String? {
+        (model.isDraggingFiles ? model.highlightedAction : model.selectedAction)?.id
     }
 
     var body: some View {
@@ -284,7 +283,7 @@ struct FanView: View {
                     let endAngle = Angle(radians: angle + sector * 0.5 - 0.045)
                     FanPetal(
                         action: action,
-                        isSelected: model.selectedAction?.id == action.id,
+                        isSelected: highlightedID == action.id,
                         accent: model.fanTheme.accent,
                         startAngle: startAngle,
                         endAngle: endAngle
@@ -308,12 +307,20 @@ struct FanView: View {
                              Image(systemName: isDropTargeted ? "arrow.down.circle.fill" : "command.square")
                                  .font(.title2)
                                  .foregroundStyle(model.fanTheme.accent)
-                             Text(model.activeWheel?.title ?? "Drag files")
-                                 .font(.headline)
-                             Text(model.activeWheel == nil ? "tap a modifier key" : "choose an option")
-                                 .font(.caption)
-                                 .foregroundStyle(.secondary)
-                        }
+                             if let action = model.isDraggingFiles ? model.highlightedAction : model.selectedAction {
+                                 Text(action.title)
+                                     .font(.headline)
+                                 Text(action.subtitle)
+                                     .font(.caption)
+                                     .foregroundStyle(.secondary)
+                             } else {
+                                 Text(model.activeWheel?.title ?? "Drag files")
+                                     .font(.headline)
+                                 Text(model.activeWheel == nil ? "tap a modifier key" : "move over an option")
+                                     .font(.caption)
+                                     .foregroundStyle(.secondary)
+                             }
+                         }
                     }
                     .position(center)
                     .onDrop(of: [UTType.fileURL.identifier], isTargeted: $isDropTargeted) { providers in
@@ -326,30 +333,30 @@ struct FanView: View {
             if pageCount > 1 {
                 HStack(spacing: 12) {
                     Button {
-                        page = max(0, page - 1)
+                        model.wheelPage = max(0, model.wheelPage - 1)
                     } label: {
                         Image(systemName: "chevron.left")
                     }
                     .buttonStyle(.bordered)
-                    .disabled(page == 0)
+                    .disabled(model.wheelPage == 0)
 
-                    Text("\(page + 1) / \(pageCount)")
+                    Text("\(model.wheelPage + 1) / \(pageCount)")
                         .font(.caption.monospacedDigit())
                         .foregroundStyle(.secondary)
 
                     Button {
-                        page = min(pageCount - 1, page + 1)
+                        model.wheelPage = min(pageCount - 1, model.wheelPage + 1)
                     } label: {
                         Image(systemName: "chevron.right")
                     }
                     .buttonStyle(.bordered)
-                    .disabled(page >= pageCount - 1)
+                    .disabled(model.wheelPage >= pageCount - 1)
                 }
                 .padding(.bottom, 2)
             }
         }
         .onChange(of: model.activeWheel) { _ in
-            page = 0
+            model.wheelPage = 0
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Conversion fan")
@@ -404,8 +411,8 @@ struct FanPetal: View {
 struct RadialPetalShape: Shape {
     var startAngle: Angle = .degrees(-112)
     var endAngle: Angle = .degrees(-68)
-    var innerRadius: CGFloat = 74
-    var outerRadius: CGFloat = 178
+    var innerRadius: CGFloat = FanGeometry.innerRadius
+    var outerRadius: CGFloat = FanGeometry.outerRadius
 
     func path(in rect: CGRect) -> Path {
         let center = CGPoint(x: rect.midX, y: rect.midY)

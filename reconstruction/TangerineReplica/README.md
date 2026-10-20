@@ -16,6 +16,9 @@ bundled helpers.
 - Radial petal rendering with real wedge hit regions rather than translated
   overlapping tiles; clicking a petal selects it and opens its documented option
   inspector.
+- During an external Finder drag, moving the dragged file over a petal highlights
+  that option and releasing commits the highlighted option; clicking is only the
+  fallback path when the fan is opened outside a drag.
 - Catalog entries for the recovered conversion formats, image/audio/video/PDF
   tools, and file actions such as copy, move, terminal, AirDrop, and float.
 - File selection, action selection, progress/error states, and settings state.

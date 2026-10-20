@@ -30,7 +30,9 @@ final class ConversionOverlayController {
             panel.isMovableByWindowBackground = false
             panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
             panel.contentViewController = NSHostingController(
-                rootView: ConversionOverlayView(model: model)
+                rootView: ConversionOverlayView(model: model) { [weak self] in
+                    self?.hide()
+                }
             )
             self.panel = panel
         }
@@ -62,6 +64,7 @@ final class ConversionOverlayController {
 
 struct ConversionOverlayView: View {
     @ObservedObject var model: ReplicaModel
+    let onDrop: () -> Void
     @State private var isDropTargeted = false
 
     var body: some View {
@@ -79,9 +82,12 @@ struct ConversionOverlayView: View {
             }
 
             FanView(model: model, isDropTargeted: $isDropTargeted)
+                .overlay {
+                    DragDestinationView(model: model, onDrop: onDrop)
+                }
                 .frame(width: 520, height: 430)
 
-            if model.selectedAction != nil {
+            if !model.isDraggingFiles, model.selectedAction != nil {
                 OptionInspector(model: model)
                     .frame(maxHeight: 150)
             }

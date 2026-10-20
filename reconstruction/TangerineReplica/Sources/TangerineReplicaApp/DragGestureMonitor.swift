@@ -55,6 +55,7 @@ final class DragGestureMonitor {
                 print("[TangerineReplica] drag shortcut monitor started")
                 overlay.show(at: NSEvent.mouseLocation)
             }
+            overlay.update(at: NSEvent.mouseLocation)
 
         case .flagsChanged:
             guard model.isDraggingFiles else { return }
@@ -62,8 +63,12 @@ final class DragGestureMonitor {
 
         case .leftMouseUp:
             guard model.isDraggingFiles else { return }
-            model.finishExternalDrag()
-            overlay.hide()
+            Task { @MainActor [weak self] in
+                try? await Task.sleep(nanoseconds: 150_000_000)
+                guard let self, self.model.isDraggingFiles else { return }
+                self.model.finishExternalDrag()
+                self.overlay.hide()
+            }
 
         default:
             break
