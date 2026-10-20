@@ -1,32 +1,20 @@
 import AppKit
 import SwiftUI
-import UniformTypeIdentifiers
 
 @main
+@MainActor
 struct TangerineReplicaApp: App {
-    @StateObject private var model = ReplicaModel()
-    @State private var isMenuBarDropTargeted = false
+    @StateObject private var model: ReplicaModel
+    private let statusItemController: StatusItemController
 
     init() {
         NSApplication.shared.setActivationPolicy(.accessory)
+        let model = ReplicaModel()
+        _model = StateObject(wrappedValue: model)
+        statusItemController = StatusItemController(model: model)
     }
 
     var body: some Scene {
-        MenuBarExtra {
-            RootView(model: model)
-        } label: {
-            Image(systemName: "circle.lefthalf.filled")
-                .foregroundStyle(isMenuBarDropTargeted ? model.fanTheme.accent : Color.primary)
-                .onDrop(
-                    of: [UTType.fileURL.identifier],
-                    isTargeted: $isMenuBarDropTargeted,
-                    perform: { providers in
-                        model.importProviders(providers)
-                    }
-                )
-        }
-        .menuBarExtraStyle(.window)
-
         Window("Tangerine", id: "main") {
             RootView(model: model)
         }

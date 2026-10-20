@@ -121,8 +121,8 @@ restart/reconnection.
 ## Native macOS reconstruction
 
 The clean-room SwiftUI reconstruction lives in
-`reconstruction/TangerineReplica/`. It targets macOS 13+, uses a native
-`MenuBarExtra`, and recreates the observed welcome flow, conversion fan,
+`reconstruction/TangerineReplica/`. It targets macOS 13+, uses a native AppKit
+`NSStatusItem` with a SwiftUI popover, and recreates the observed welcome flow, conversion fan,
 settings, drag/drop state, operation progress, and safe path-copy action.
 The original converter backends, purchase services, signing identity, and
 private client configuration are not copied. Unsupported conversions report

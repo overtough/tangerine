@@ -667,6 +667,12 @@ menu states, and routes their recovered action groups into the UI. The exact
 membership and visual layout of each original menu still require direct UI
 comparison.
 
+The user then observed that the replica process was alive but no menu-bar icon
+appeared. To remove the SwiftUI menu-bar registration as a runtime variable,
+the reconstruction now creates an explicit AppKit `NSStatusItem` and anchors a
+SwiftUI `NSPopover` containing the fan to that status item. Native macOS
+compilation and icon visibility still need to be rechecked after this change.
+
 The Linux worker has no Swift/Xcode toolchain, so compilation cannot run in
 this worker. On October 20, 2026, the user-side Apple Silicon Mac completed
 both `swift build` and `swift run TangerineReplica` after the macOS 13

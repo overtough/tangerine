@@ -7,7 +7,7 @@ bundled helpers.
 
 ## Current slice
 
-- macOS 13+ SwiftUI menu-bar app using `MenuBarExtra`.
+- macOS 13+ SwiftUI menu-bar app using an AppKit `NSStatusItem` and SwiftUI popover.
 - First-run welcome flow reflecting the recovered onboarding steps.
 - Modifier-aware drag menus: holding Shift, Command, or Control while dropping
   a file selects one of three menu states.

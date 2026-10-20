@@ -157,6 +157,7 @@ def check_replica_scaffold() -> None:
         REPLICA / "Sources" / "TangerineReplicaApp" / "Models.swift",
         REPLICA / "Sources" / "TangerineReplicaApp" / "MainView.swift",
         REPLICA / "Sources" / "TangerineReplicaApp" / "SettingsView.swift",
+        REPLICA / "Sources" / "TangerineReplicaApp" / "StatusItemController.swift",
         REPLICA / "Sources" / "TangerineReplicaApp" / "TangerineReplicaApp.swift",
     ]
     for path in required_files:
@@ -171,7 +172,8 @@ def check_replica_scaffold() -> None:
     )
     for fragment in [
         ".macOS(.v13)",
-        "MenuBarExtra",
+        "NSStatusBar.system.statusItem",
+        "NSHostingController",
         "ConversionAction",
         "hasCompletedWelcome",
         "conversionFanTheme",
@@ -180,7 +182,6 @@ def check_replica_scaffold() -> None:
         "DragModifier",
         "currentEventModifier",
         "activeModifier",
-        "isMenuBarDropTargeted",
         "Hold Shift, Command, or Control",
         "SettingsLink",
         "if #available(macOS 14.0, *)",
