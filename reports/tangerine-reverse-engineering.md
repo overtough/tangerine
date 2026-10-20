@@ -634,6 +634,20 @@ copy, but it is not a runtime test: the collector was run without `--launch`.
 Conversion behavior, cleanup, process arguments, network traffic, and
 purchase flows remain unvalidated.
 
+### User-run bounded launch observation
+
+The same Apple Silicon Mac then ran the collector with
+`--launch --seconds 20`. The repeated static and signing checks passed, the
+macOS `open` launch request returned success, and the collector waited the
+full 20-second observation window without terminating any process. At the end
+of that window, `pgrep -x Tangerine` reported two matching process IDs.
+
+This establishes that one or more processes named `Tangerine` were visible
+after the launch request. The collector does not compare before/after process
+lists, inspect windows, or prove that either process was newly created by this
+invocation, so this is process-visibility evidence rather than proof of UI
+readiness, conversion behavior, cleanup, network behavior, or purchase flows.
+
 FFmpeg and cwebp carry sandbox-inherit entitlements. The embedded Java
 launcher carries sandbox inheritance plus `com.apple.security.cs.allow-jit`.
 That JIT entitlement is expected for a bundled Java VM, but it increases the
@@ -774,6 +788,7 @@ report contains no raw RevenueCat key. They do not execute the application.
 | `python3 -m py_compile tools/verify.py` | Passed |
 | `node --check` on `OfficePreview.js` and `PagesWriter.js` | Passed |
 | macOS `tools/macos_validate.sh` corrected default rerun (user-supplied output) | Passed; signing, Gatekeeper, and entitlement checks succeeded; no launch was requested |
+| macOS `tools/macos_validate.sh --launch --seconds 20` (user-supplied output) | Passed; launch request succeeded and two exact-name `Tangerine` processes were visible after the wait |
 | `unzip -tq` on the attached archive | Passed |
 | Python ZIP integrity check for all PowerPoint JARs | Passed |
 | Python plist parsing for app/privacy/RevenueCat plists | Passed |
@@ -792,9 +807,10 @@ The static reconstruction is complete enough to describe the shipped product
 and its local architecture, but the following work is still required for a
 runtime-complete assessment:
 
-1. The reported Apple Silicon run completed bundle signing and Gatekeeper
-   validation. A launch-mode macOS run is still needed to observe process
-   startup, sandbox behavior, and actual user-facing runtime behavior.
+1. The reported Apple Silicon launch-mode run established process visibility
+   after a 20-second launch request. UI readiness, sandbox behavior during
+   real operations, and actual user-facing runtime behavior still need direct
+   observation.
 2. Exercise one sample for each extension and record the actual compatibility
    matrix, output filename rules, progress behavior, and cleanup behavior.
 3. Test malformed ZIP/EPUB/DOCX/ODS/PDF/HEIC/EXIF inputs against the stated

@@ -31,7 +31,8 @@ Persistent state, established patterns, verified facts, and project notes for th
 ## Latest Validation State
 
 - On October 20, 2026, the corrected default `tools/macos_validate.sh` run on an Apple Silicon Mac passed bundle existence, Info.plist, arm64 format, code-signature verification, Gatekeeper assessment, signing identity, and embedded-entitlement parsing.
-- The successful run was non-launching; no process startup, conversion, cleanup, network, purchase, or UI behavior was observed.
+- A subsequent `tools/macos_validate.sh --launch --seconds 20` run repeated the static checks, received a successful macOS `open` request, waited 20 seconds, and observed two exact-name `Tangerine` processes with `pgrep -x`; the collector did not terminate either process.
+- These runs establish signing and bounded process-visibility evidence only; UI readiness, conversion, cleanup, network, purchase, and other user workflows remain unvalidated.
 - Commit `3a3e5b8` fixed the entitlement pipeline by keeping `codesign` stderr diagnostics separate from the XML sent to `plutil`.
-- The next runtime step is an explicit macOS launch observation using `tools/macos_validate.sh --launch --seconds N`.
+- The next runtime step is direct macOS observation of UI and representative conversion workflows, followed by targeted network and cleanup checks.
 - The report and memory update was verified with `make test`, `python3 -m py_compile tools/verify.py`, and `bash -n tools/macos_validate.sh`.
