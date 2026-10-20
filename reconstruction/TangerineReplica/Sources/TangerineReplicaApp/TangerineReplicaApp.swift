@@ -53,9 +53,7 @@ struct MenuBarMenu: View {
                 Label("Open Conversion Fan", systemImage: "circle.grid.cross")
             }
 
-            SettingsLink {
-                Label("Settings", systemImage: "gearshape")
-            }
+            settingsMenuItem
 
             Divider()
 
@@ -65,6 +63,22 @@ struct MenuBarMenu: View {
         }
         .padding(16)
         .frame(width: 300)
+    }
+
+    @ViewBuilder
+    private var settingsMenuItem: some View {
+        if #available(macOS 14.0, *) {
+            SettingsLink {
+                Label("Settings", systemImage: "gearshape")
+            }
+        } else {
+            Button {
+                // The SwiftUI Settings scene exposes this action on macOS 13.
+                NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+            } label: {
+                Label("Settings", systemImage: "gearshape")
+            }
+        }
     }
 }
 

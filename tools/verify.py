@@ -178,6 +178,8 @@ def check_replica_scaffold() -> None:
         "Copy Path",
         "Backend not connected",
         "SettingsLink",
+        "if #available(macOS 14.0, *)",
+        "showSettingsWindow:",
     ]:
         haystack = package if fragment == ".macOS(.v13)" else source
         if fragment not in haystack:
