@@ -90,6 +90,35 @@ run_optional_check() {
 }
 
 
+run_entitlements_check() {
+    local output
+    local status
+
+    say "[check] embedded entitlements"
+    if output=$(codesign --display --entitlements - --xml "$APP_PATH" 2>&1); then
+        if output=$(printf '%s\n' "$output" | plutil -convert xml1 -o - - 2>&1); then
+            status=0
+        else
+            status=$?
+        fi
+    else
+        status=$?
+    fi
+
+    if [ -n "$output" ]; then
+        printf '%s\n' "$output" | redact_stream
+    fi
+
+    if [ "$status" -eq 0 ]; then
+        say "[ok] embedded entitlements"
+    else
+        say "[not confirmed] embedded entitlements (exit $status)"
+        CHECK_FAILURES=$((CHECK_FAILURES + 1))
+    fi
+    return 0
+}
+
+
 static_checks() {
     local info_plist
     local executable
@@ -118,7 +147,11 @@ static_checks() {
         run_optional_check "codesign verification" codesign --verify --deep --strict --verbose=2 "$APP_PATH"
         run_optional_check "Gatekeeper assessment" spctl --assess --type execute --verbose=4 "$APP_PATH"
         run_optional_check "code-signing identity" codesign --display --verbose=4 "$APP_PATH"
-        run_optional_check "embedded entitlements" codesign --display --entitlements :- "$APP_PATH"
+        if command -v codesign >/dev/null 2>&1 && command -v plutil >/dev/null 2>&1; then
+            run_entitlements_check
+        else
+            say "[skip] embedded entitlements (codesign and plutil are required)"
+        fi
     else
         say "[skip] macOS signing checks require Darwin"
     fi

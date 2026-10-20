@@ -607,6 +607,31 @@ com.apple.security.files.user-selected.read-write = true
 com.apple.security.network.client = true
 ```
 
+### User-run macOS signature validation
+
+The default, non-launching collector was run on an Apple Silicon Mac against
+the bundle at `reverse-engineering/Tangerine.app`. The user-provided output
+reported:
+
+- `Info.plist` syntax valid and bundle identifier `com.th.Tangerine`;
+- a thin arm64 main executable;
+- `codesign --verify --deep --strict` valid on disk and satisfying its
+  designated requirement;
+- Gatekeeper accepted the bundle with `source=Mac App Store`;
+- Apple Mac OS Application Signing authority, team identifier `GTF45UH2VQ`,
+  CodeDirectory `v=20500` with the runtime flag, and 462 sealed resources;
+- embedded entitlements matching the static extraction above: App Sandbox,
+  app-scoped bookmarks, user-selected read/write access, and network client.
+
+The reported CDHash was
+`a649af2fa1d7bdc1c5cfef3e42ee455b97c03d62`; the full SHA-256 CodeDirectory
+hash was
+`a649af2fa1d7bdc1c5cfef3e42ee455b97c03d62f237a4286c93f1335808d61c`.
+This confirms package integrity and admission/signing observations for that
+copy, but it is not a runtime test: the collector was run without `--launch`.
+Conversion behavior, cleanup, process arguments, network traffic, and
+purchase flows remain unvalidated.
+
 FFmpeg and cwebp carry sandbox-inherit entitlements. The embedded Java
 launcher carries sandbox inheritance plus `com.apple.security.cs.allow-jit`.
 That JIT entitlement is expected for a bundled Java VM, but it increases the
@@ -746,6 +771,7 @@ report contains no raw RevenueCat key. They do not execute the application.
 | `make test` | Passed; archive/package/report checks completed |
 | `python3 -m py_compile tools/verify.py` | Passed |
 | `node --check` on `OfficePreview.js` and `PagesWriter.js` | Passed |
+| macOS `tools/macos_validate.sh` default run (user-supplied output) | Passed; signing and Gatekeeper checks succeeded; no launch was requested |
 | `unzip -tq` on the attached archive | Passed |
 | Python ZIP integrity check for all PowerPoint JARs | Passed |
 | Python plist parsing for app/privacy/RevenueCat plists | Passed |
@@ -764,9 +790,9 @@ The static reconstruction is complete enough to describe the shipped product
 and its local architecture, but the following work is still required for a
 runtime-complete assessment:
 
-1. On an isolated Apple Silicon macOS 13+ machine, run `codesign --verify`,
-   `spctl`, and `codesign --display --entitlements :-` against the original
-   bundle and compare with the embedded signature parsed here.
+1. The reported Apple Silicon run completed bundle signing and Gatekeeper
+   validation. A launch-mode macOS run is still needed to observe process
+   startup, sandbox behavior, and actual user-facing runtime behavior.
 2. Exercise one sample for each extension and record the actual compatibility
    matrix, output filename rules, progress behavior, and cleanup behavior.
 3. Test malformed ZIP/EPUB/DOCX/ODS/PDF/HEIC/EXIF inputs against the stated

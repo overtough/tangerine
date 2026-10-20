@@ -61,7 +61,9 @@ chmod +x tools/macos_validate.sh
 The default run is non-launching. It checks that the bundle and main
 executable exist, validates `Info.plist`, reports the executable format, and
 on macOS runs `codesign --verify`, `spctl --assess`, and signing identity and
-entitlement inspection. If `--app` is omitted, the collector uses
+entitlement inspection. Entitlements use the non-deprecated
+`codesign --entitlements - --xml | plutil` form. If `--app` is omitted, the
+collector uses
 `reverse-engineering/Tangerine.app` relative to the repository. Expected
 command failures are reported and the remaining checks still run; a check that
 cannot be confirmed gives the collector a nonzero exit status.

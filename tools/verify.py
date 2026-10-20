@@ -115,6 +115,8 @@ def check_collector() -> None:
         "spctl",
         "appl_[A-Za-z0-9]+",
         "[REDACTED_REVENUECAT_KEY]",
+        "--entitlements - --xml",
+        "plutil -convert xml1 -o - -",
     ]
     for fragment in required_fragments:
         if fragment not in text:
@@ -122,6 +124,8 @@ def check_collector() -> None:
 
     if re.search(r"\b(?:kill|pkill|killall)\b", text):
         fail("macOS validation collector contains a process-termination command")
+    if "--entitlements :-" in text:
+        fail("macOS validation collector uses deprecated colon entitlement output")
     if re.search(r"(?m)^\s*set\s+-[^\n]*e", text):
         fail("macOS validation collector enables shell exit-on-error")
     if re.search(r"\b(?:mktemp|tee)\b", text):
