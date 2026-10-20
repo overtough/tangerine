@@ -117,6 +117,7 @@ def check_collector() -> None:
         "[REDACTED_REVENUECAT_KEY]",
         "--entitlements - --xml",
         "plutil -convert xml1 -o - -",
+        "2> >(redact_stream >&2)",
     ]
     for fragment in required_fragments:
         if fragment not in text:
@@ -126,6 +127,8 @@ def check_collector() -> None:
         fail("macOS validation collector contains a process-termination command")
     if "--entitlements :-" in text:
         fail("macOS validation collector uses deprecated colon entitlement output")
+    if re.search(r"codesign[^\n]*--entitlements[^\n]*2>&1", text):
+        fail("macOS validation collector mixes codesign diagnostics with entitlement XML")
     if re.search(r"(?m)^\s*set\s+-[^\n]*e", text):
         fail("macOS validation collector enables shell exit-on-error")
     if re.search(r"\b(?:mktemp|tee)\b", text):

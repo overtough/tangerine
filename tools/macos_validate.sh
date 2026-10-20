@@ -95,7 +95,7 @@ run_entitlements_check() {
     local status
 
     say "[check] embedded entitlements"
-    if output=$(codesign --display --entitlements - --xml "$APP_PATH" 2>&1); then
+    if output=$(codesign --display --entitlements - --xml "$APP_PATH" 2> >(redact_stream >&2)); then
         if output=$(printf '%s\n' "$output" | plutil -convert xml1 -o - - 2>&1); then
             status=0
         else
