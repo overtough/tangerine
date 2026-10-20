@@ -29,7 +29,6 @@ struct TangerineReplicaApp: App {
 struct MenuBarMenu: View {
     @ObservedObject var model: ReplicaModel
     @Environment(\.openWindow) private var openWindow
-    @Environment(\.openSettings) private var openSettings
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -54,9 +53,7 @@ struct MenuBarMenu: View {
                 Label("Open Conversion Fan", systemImage: "circle.grid.cross")
             }
 
-            Button {
-                openSettings()
-            } label: {
+            SettingsLink {
                 Label("Settings", systemImage: "gearshape")
             }
 

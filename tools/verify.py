@@ -177,12 +177,15 @@ def check_replica_scaffold() -> None:
         "conversionFanTheme",
         "Copy Path",
         "Backend not connected",
+        "SettingsLink",
     ]:
         haystack = package if fragment == ".macOS(.v13)" else source
         if fragment not in haystack:
             fail(f"replica scaffold is missing {fragment!r}")
     if re.search(r"\bappl_[A-Za-z0-9]+\b", source):
         fail("replica scaffold contains an unredacted RevenueCat API key")
+    if "openSettings" in source:
+        fail("replica scaffold uses the macOS 14-only openSettings environment value")
     print(f"replica scaffold ok: {REPLICA.relative_to(ROOT)}")
 
 
