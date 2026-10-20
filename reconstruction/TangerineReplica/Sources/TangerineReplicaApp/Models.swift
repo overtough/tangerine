@@ -58,6 +58,30 @@ enum ActionKind: String, Hashable {
     case tool
 }
 
+enum WheelKind: String, CaseIterable, Identifiable, Hashable {
+    case conversion
+    case tools
+    case actions
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .conversion: return "Conversion wheel"
+        case .tools: return "Tools wheel"
+        case .actions: return "Actions wheel"
+        }
+    }
+
+    var symbolName: String {
+        switch self {
+        case .conversion: return "arrow.triangle.2.circlepath"
+        case .tools: return "wrench.and.screwdriver"
+        case .actions: return "folder.badge.gearshape"
+        }
+    }
+}
+
 enum DragModifier: String, CaseIterable, Identifiable, Hashable {
     case shift
     case command
@@ -78,15 +102,26 @@ enum DragModifier: String, CaseIterable, Identifiable, Hashable {
     }
 
     var menuTitle: String {
-        "\(title) menu"
+        wheelKind.title
     }
 
-    static func currentEventModifier() -> DragModifier? {
-        let flags = NSEvent.modifierFlags
+    var wheelKind: WheelKind {
+        switch self {
+        case .shift: return .conversion
+        case .command: return .tools
+        case .control: return .actions
+        }
+    }
+
+    static func from(flags: NSEvent.ModifierFlags) -> DragModifier? {
         if flags.contains(.shift) { return .shift }
         if flags.contains(.command) { return .command }
         if flags.contains(.control) { return .control }
         return nil
+    }
+
+    static func currentEventModifier() -> DragModifier? {
+        from(flags: NSEvent.modifierFlags)
     }
 }
 
@@ -203,6 +238,8 @@ final class ReplicaModel: ObservableObject {
     @Published var selectedFiles: [URL] = []
     @Published var selectedAction: ConversionAction?
     @Published var activeModifier: DragModifier?
+    @Published var activeWheel: WheelKind?
+    @Published var isDraggingFiles = false
     @Published var isWorking = false
     @Published var progress = 0.0
     @Published var statusMessage = "Drop files to begin"
@@ -218,22 +255,24 @@ final class ReplicaModel: ObservableObject {
         fanTheme = FanTheme(rawValue: defaults.string(forKey: "conversionFanTheme") ?? "tangerine") ?? .tangerine
         soundsEnabled = defaults.object(forKey: "soundsAndHapticsEnabled") as? Bool ?? true
         activeModifier = nil
+        activeWheel = nil
+        isDraggingFiles = false
     }
 
-    func actions(for modifier: DragModifier) -> [ConversionAction] {
-        switch modifier {
-        case .shift:
+    func actions(for wheel: WheelKind) -> [ConversionAction] {
+        switch wheel {
+        case .conversion:
             return ConversionAction.catalog.filter { $0.kind == .convert }
-        case .command:
+        case .tools:
             return ConversionAction.catalog.filter { $0.kind == .tool }
-        case .control:
+        case .actions:
             return ConversionAction.catalog
         }
     }
 
     var activeMenuActions: [ConversionAction] {
-        guard let activeModifier else { return [] }
-        return actions(for: activeModifier)
+        guard let activeWheel else { return [] }
+        return actions(for: activeWheel)
     }
 
     var selectedFileSummary: String {
@@ -272,10 +311,33 @@ final class ReplicaModel: ObservableObject {
 
         selectedFiles = localFiles
         activeModifier = modifier
-        let availableActions = modifier.map { actions(for: $0) } ?? ConversionAction.catalog
+        activeWheel = modifier?.wheelKind
+        let availableActions = activeWheel.map { actions(for: $0) } ?? ConversionAction.catalog
         selectedAction = availableActions.first
-        statusMessage = modifier.map { "\($0.menuTitle) ready" } ?? "Choose a petal to continue"
+        statusMessage = activeWheel.map { "\($0.title) ready" } ?? "Drag files and tap a shortcut"
         notice = nil
+    }
+
+    func beginExternalDrag(_ urls: [URL], modifier: DragModifier?) {
+        receiveFiles(urls, modifier: modifier)
+        isDraggingFiles = true
+    }
+
+    func updateExternalDragModifier(_ modifier: DragModifier?) {
+        guard isDraggingFiles else { return }
+        activeModifier = modifier
+        activeWheel = modifier?.wheelKind
+        if let activeWheel {
+            selectedAction = actions(for: activeWheel).first
+            statusMessage = "\(activeWheel.title) ready"
+        } else {
+            selectedAction = nil
+            statusMessage = "Tap Shift, Command, or Control"
+        }
+    }
+
+    func finishExternalDrag() {
+        isDraggingFiles = false
     }
 
     func chooseFiles() {
@@ -370,6 +432,8 @@ final class ReplicaModel: ObservableObject {
         selectedFiles = []
         selectedAction = nil
         activeModifier = nil
+        activeWheel = nil
+        isDraggingFiles = false
         progress = 0
         statusMessage = "Drop files to begin"
         notice = nil

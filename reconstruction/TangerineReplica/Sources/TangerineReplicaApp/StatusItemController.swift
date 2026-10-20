@@ -25,7 +25,7 @@ final class StatusItemController: NSObject {
             button.action = #selector(togglePopover(_:))
         }
 
-        let hostingController = NSHostingController(rootView: RootView(model: model))
+        let hostingController = NSHostingController(rootView: MenuBarStatusView(model: model))
         popover.contentViewController = hostingController
         popover.contentSize = NSSize(width: 520, height: 680)
         popover.behavior = .transient

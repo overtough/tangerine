@@ -660,12 +660,13 @@ conversion backends instead of claiming behavior that the available REA and
 macOS evidence did not establish.
 
 The user-provided runtime interaction clarifies that the drag flow has three
-modifier-key menus: dragging a file while holding **Shift**, **Command**, or
-**Control** selects a different menu. The reconstruction now captures the
-modifier at drop time on the menu-bar target and fan window, exposes the three
-menu states, and routes their recovered action groups into the UI. The exact
-membership and visual layout of each original menu still require direct UI
-comparison.
+modifier-key menus: while dragging a file, tapping **Shift**, **Command**, or
+**Control** selects a different wheel. Static strings add the names
+`conversion`, `tools`, and `actions`, and the binary imports both global and
+local NSEvent monitor APIs. The reconstruction now follows that model with a
+global/local drag monitor and a transient overlay rather than asking the user
+to drop files onto a permanent document window. The exact key-to-wheel mapping,
+menu membership, and visual layout still require direct UI comparison.
 
 The user then observed that the replica process was alive but no menu-bar icon
 appeared. To remove the SwiftUI menu-bar registration as a runtime variable,

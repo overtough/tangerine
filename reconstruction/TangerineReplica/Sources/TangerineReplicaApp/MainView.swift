@@ -129,10 +129,10 @@ struct ModifierMenuBanner: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            if let modifier = model.activeModifier {
-                Label(modifier.menuTitle, systemImage: modifier.symbolName)
+            if let wheel = model.activeWheel {
+                Label(wheel.title, systemImage: wheel.symbolName)
                     .font(.subheadline.weight(.semibold))
-                Text("The file was dropped with the \(modifier.title) key held. Choose from this menu.")
+                Text("Tap the chosen modifier combination while dragging files.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
 
@@ -153,7 +153,7 @@ struct ModifierMenuBanner: View {
             } else {
                 Label("Three drag menus", systemImage: "command.square")
                     .font(.subheadline.weight(.semibold))
-                Text("Hold Shift, Command, or Control while dragging a file to open its menu.")
+                Text("Drag files anywhere, then tap Shift, Command, or Control.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -210,7 +210,7 @@ struct FanView: View {
     @Binding var isDropTargeted: Bool
 
     private var actions: [ConversionAction] {
-        model.activeModifier.map { model.actions(for: $0) } ?? ConversionAction.catalog
+        model.activeWheel.map { model.actions(for: $0) } ?? ConversionAction.catalog
     }
 
     var body: some View {
@@ -249,14 +249,14 @@ struct FanView: View {
                     .shadow(color: .black.opacity(0.14), radius: 18, y: 8)
                     .overlay {
                         VStack(spacing: 7) {
-                            Image(systemName: isDropTargeted ? "arrow.down.circle.fill" : "arrow.down.doc")
-                                .font(.title2)
-                                .foregroundStyle(model.fanTheme.accent)
-                            Text(isDropTargeted ? "Release" : "Drop files")
-                                .font(.headline)
-                            Text("or choose a petal")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
+                             Image(systemName: isDropTargeted ? "arrow.down.circle.fill" : "command.square")
+                                 .font(.title2)
+                                 .foregroundStyle(model.fanTheme.accent)
+                             Text(model.activeWheel?.title ?? "Drag files")
+                                 .font(.headline)
+                             Text(model.activeWheel == nil ? "tap a modifier key" : "choose an option")
+                                 .font(.caption)
+                                 .foregroundStyle(.secondary)
                         }
                     }
                     .position(center)

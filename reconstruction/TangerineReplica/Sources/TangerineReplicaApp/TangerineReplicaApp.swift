@@ -6,12 +6,15 @@ import SwiftUI
 struct TangerineReplicaApp: App {
     @StateObject private var model: ReplicaModel
     private let statusItemController: StatusItemController
+    private let dragGestureMonitor: DragGestureMonitor
 
     init() {
         NSApplication.shared.setActivationPolicy(.accessory)
         let model = ReplicaModel()
+        let overlay = ConversionOverlayController(model: model)
         _model = StateObject(wrappedValue: model)
         statusItemController = StatusItemController(model: model)
+        dragGestureMonitor = DragGestureMonitor(model: model, overlay: overlay)
     }
 
     var body: some Scene {

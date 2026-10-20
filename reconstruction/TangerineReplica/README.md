@@ -9,9 +9,10 @@ bundled helpers.
 
 - macOS 13+ SwiftUI menu-bar app using an AppKit `NSStatusItem` and SwiftUI popover.
 - First-run welcome flow reflecting the recovered onboarding steps.
-- Modifier-aware drag menus: holding Shift, Command, or Control while dropping
-  a file selects one of three menu states.
-- Conversion-fan-style drag/drop panel with recovered categories and actions.
+- Global drag shortcut monitor matching the observed flow: drag files, then tap
+  Shift, Command, or Control to choose the Conversion, Tools, or Actions wheel.
+- Transient conversion-fan overlay that appears during the file drag instead of
+  asking the user to drop files onto a permanent document window.
 - File selection, action selection, progress/error states, and settings state.
 - Safe `Copy Path` action and explicit “backend not connected” states for
   conversion actions; it does not pretend to reproduce unverified conversion
