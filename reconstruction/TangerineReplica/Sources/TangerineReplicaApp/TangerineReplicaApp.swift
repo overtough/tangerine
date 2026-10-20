@@ -13,7 +13,7 @@ struct TangerineReplicaApp: App {
 
     var body: some Scene {
         MenuBarExtra {
-            MenuBarMenu(model: model)
+            RootView(model: model)
         } label: {
             Image(systemName: "circle.lefthalf.filled")
                 .foregroundStyle(isMenuBarDropTargeted ? model.fanTheme.accent : Color.primary)
