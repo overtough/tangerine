@@ -9,6 +9,8 @@ bundled helpers.
 
 - macOS 13+ SwiftUI menu-bar app using `MenuBarExtra`.
 - First-run welcome flow reflecting the recovered onboarding steps.
+- Modifier-aware drag menus: holding Shift, Command, or Control while dropping
+  a file selects one of three menu states.
 - Conversion-fan-style drag/drop panel with recovered categories and actions.
 - File selection, action selection, progress/error states, and settings state.
 - Safe `Copy Path` action and explicit “backend not connected” states for

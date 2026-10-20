@@ -659,6 +659,14 @@ converter helpers. The reconstruction deliberately reports unsupported
 conversion backends instead of claiming behavior that the available REA and
 macOS evidence did not establish.
 
+The user-provided runtime interaction clarifies that the drag flow has three
+modifier-key menus: dragging a file while holding **Shift**, **Command**, or
+**Control** selects a different menu. The reconstruction now captures the
+modifier at drop time on the menu-bar target and fan window, exposes the three
+menu states, and routes their recovered action groups into the UI. The exact
+membership and visual layout of each original menu still require direct UI
+comparison.
+
 The Linux worker has no Swift/Xcode toolchain, so compilation cannot run in
 this worker. On October 20, 2026, the user-side Apple Silicon Mac completed
 both `swift build` and `swift run TangerineReplica` after the macOS 13

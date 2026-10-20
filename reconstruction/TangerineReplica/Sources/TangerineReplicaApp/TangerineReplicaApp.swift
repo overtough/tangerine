@@ -1,17 +1,29 @@
 import AppKit
 import SwiftUI
+import UniformTypeIdentifiers
 
 @main
 struct TangerineReplicaApp: App {
     @StateObject private var model = ReplicaModel()
+    @State private var isMenuBarDropTargeted = false
 
     init() {
         NSApplication.shared.setActivationPolicy(.accessory)
     }
 
     var body: some Scene {
-        MenuBarExtra("Tangerine", systemImage: "circle.lefthalf.filled") {
+        MenuBarExtra {
             MenuBarMenu(model: model)
+        } label: {
+            Image(systemName: "circle.lefthalf.filled")
+                .foregroundStyle(isMenuBarDropTargeted ? model.fanTheme.accent : Color.primary)
+                .onDrop(
+                    of: [UTType.fileURL.identifier],
+                    isTargeted: $isMenuBarDropTargeted,
+                    perform: { providers in
+                        model.importProviders(providers)
+                    }
+                )
         }
         .menuBarExtraStyle(.window)
 
@@ -46,6 +58,31 @@ struct MenuBarMenu: View {
             }
 
             Divider()
+
+            if let modifier = model.activeModifier {
+                Text("\(modifier.menuTitle) · \(model.activeMenuActions.count) options")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(model.fanTheme.accent)
+
+                ForEach(model.activeMenuActions) { action in
+                    Button {
+                        model.select(action)
+                        model.runSelectedAction()
+                    } label: {
+                        Label(action.title, systemImage: action.symbolName)
+                    }
+                }
+
+                Divider()
+            }
+
+            Text("Drop a file while holding")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+
+            ForEach(DragModifier.allCases) { modifier in
+                Label("\(modifier.title) → \(modifier.menuTitle)", systemImage: modifier.symbolName)
+            }
 
             Button {
                 openWindow(id: "main")
@@ -125,7 +162,7 @@ struct WelcomeView: View {
 
             VStack(alignment: .leading, spacing: 14) {
                 WelcomeRow(number: "1", title: "Drop files", detail: "Drag local files onto the fan.")
-                WelcomeRow(number: "2", title: "Choose a petal", detail: "Use the modifier-key shortcuts or click an action.")
+                 WelcomeRow(number: "2", title: "Choose one of three menus", detail: "Hold Shift, Command, or Control while dragging a file.")
                 WelcomeRow(number: "3", title: "Keep results beside originals", detail: "The original app uses security-scoped folder access.")
                 WelcomeRow(number: "4", title: "Stay local", detail: "This reconstruction does not upload your files.")
             }

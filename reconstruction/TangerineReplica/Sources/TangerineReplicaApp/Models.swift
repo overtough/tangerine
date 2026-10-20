@@ -58,6 +58,38 @@ enum ActionKind: String, Hashable {
     case tool
 }
 
+enum DragModifier: String, CaseIterable, Identifiable, Hashable {
+    case shift
+    case command
+    case control
+
+    var id: String { rawValue }
+
+    var title: String {
+        rawValue.capitalized
+    }
+
+    var symbolName: String {
+        switch self {
+        case .shift: return "shift"
+        case .command: return "command"
+        case .control: return "control"
+        }
+    }
+
+    var menuTitle: String {
+        "\(title) menu"
+    }
+
+    static func currentEventModifier() -> DragModifier? {
+        let flags = NSEvent.modifierFlags
+        if flags.contains(.shift) { return .shift }
+        if flags.contains(.command) { return .command }
+        if flags.contains(.control) { return .control }
+        return nil
+    }
+}
+
 struct ConversionAction: Identifiable, Hashable {
     let id: String
     let title: String
@@ -170,6 +202,7 @@ final class ReplicaModel: ObservableObject {
     @Published var hasCompletedWelcome: Bool
     @Published var selectedFiles: [URL] = []
     @Published var selectedAction: ConversionAction?
+    @Published var activeModifier: DragModifier?
     @Published var isWorking = false
     @Published var progress = 0.0
     @Published var statusMessage = "Drop files to begin"
@@ -184,6 +217,23 @@ final class ReplicaModel: ObservableObject {
         hasCompletedWelcome = defaults.bool(forKey: "hasCompletedWelcome")
         fanTheme = FanTheme(rawValue: defaults.string(forKey: "conversionFanTheme") ?? "tangerine") ?? .tangerine
         soundsEnabled = defaults.object(forKey: "soundsAndHapticsEnabled") as? Bool ?? true
+        activeModifier = nil
+    }
+
+    func actions(for modifier: DragModifier) -> [ConversionAction] {
+        switch modifier {
+        case .shift:
+            return ConversionAction.catalog.filter { $0.kind == .convert }
+        case .command:
+            return ConversionAction.catalog.filter { $0.kind == .tool }
+        case .control:
+            return ConversionAction.catalog
+        }
+    }
+
+    var activeMenuActions: [ConversionAction] {
+        guard let activeModifier else { return [] }
+        return actions(for: activeModifier)
     }
 
     var selectedFileSummary: String {
@@ -209,7 +259,7 @@ final class ReplicaModel: ObservableObject {
         defaults.set(enabled, forKey: "soundsAndHapticsEnabled")
     }
 
-    func receiveFiles(_ urls: [URL]) {
+    func receiveFiles(_ urls: [URL], modifier: DragModifier? = nil) {
         let localFiles = urls.filter { $0.isFileURL }
         guard !localFiles.isEmpty else {
             notice = OperationNotice(
@@ -221,8 +271,10 @@ final class ReplicaModel: ObservableObject {
         }
 
         selectedFiles = localFiles
-        selectedAction = selectedAction ?? ConversionAction.catalog.first
-        statusMessage = "Choose a petal to continue"
+        activeModifier = modifier
+        let availableActions = modifier.map { actions(for: $0) } ?? ConversionAction.catalog
+        selectedAction = availableActions.first
+        statusMessage = modifier.map { "\($0.menuTitle) ready" } ?? "Choose a petal to continue"
         notice = nil
     }
 
@@ -233,12 +285,13 @@ final class ReplicaModel: ObservableObject {
         panel.allowsMultipleSelection = true
         panel.prompt = "Choose"
         if panel.runModal() == .OK {
-            receiveFiles(panel.urls)
+            receiveFiles(panel.urls, modifier: nil)
         }
     }
 
     func importProviders(_ providers: [NSItemProvider]) -> Bool {
         let typeIdentifier = UTType.fileURL.identifier
+        let modifier = DragModifier.currentEventModifier()
         for provider in providers where provider.hasItemConformingToTypeIdentifier(typeIdentifier) {
             provider.loadItem(forTypeIdentifier: typeIdentifier, options: nil) { [weak self] item, _ in
                 let url: URL?
@@ -252,7 +305,7 @@ final class ReplicaModel: ObservableObject {
 
                 guard let url else { return }
                 Task { @MainActor [weak self] in
-                    self?.receiveFiles([url])
+                    self?.receiveFiles([url], modifier: modifier)
                 }
             }
         }
@@ -316,6 +369,7 @@ final class ReplicaModel: ObservableObject {
     func resetSelection() {
         selectedFiles = []
         selectedAction = nil
+        activeModifier = nil
         progress = 0
         statusMessage = "Drop files to begin"
         notice = nil

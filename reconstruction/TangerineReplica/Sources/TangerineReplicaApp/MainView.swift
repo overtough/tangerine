@@ -11,6 +11,8 @@ struct MainView: View {
 
             ScrollView {
                 VStack(spacing: 18) {
+                    ModifierMenuBanner(model: model)
+
                     FanView(model: model, isDropTargeted: $isDropTargeted)
 
                     SelectionSummary(model: model)
@@ -122,6 +124,46 @@ struct SelectionSummary: View {
     }
 }
 
+struct ModifierMenuBanner: View {
+    @ObservedObject var model: ReplicaModel
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if let modifier = model.activeModifier {
+                Label(modifier.menuTitle, systemImage: modifier.symbolName)
+                    .font(.subheadline.weight(.semibold))
+                Text("The file was dropped with the \(modifier.title) key held. Choose from this menu.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(model.activeMenuActions) { action in
+                            Button {
+                                model.select(action)
+                            } label: {
+                                Label(action.title, systemImage: action.symbolName)
+                                    .labelStyle(.titleAndIcon)
+                            }
+                            .buttonStyle(.bordered)
+                            .tint(model.selectedAction?.id == action.id ? model.fanTheme.accent : nil)
+                        }
+                    }
+                }
+            } else {
+                Label("Three drag menus", systemImage: "command.square")
+                    .font(.subheadline.weight(.semibold))
+                Text("Hold Shift, Command, or Control while dragging a file to open its menu.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(14)
+        .background(.quaternary.opacity(0.45), in: RoundedRectangle(cornerRadius: 14))
+    }
+}
+
 struct NoticeView: View {
     let notice: OperationNotice
 
@@ -167,7 +209,9 @@ struct FanView: View {
     @ObservedObject var model: ReplicaModel
     @Binding var isDropTargeted: Bool
 
-    private let actions = ConversionAction.catalog
+    private var actions: [ConversionAction] {
+        model.activeModifier.map { model.actions(for: $0) } ?? ConversionAction.catalog
+    }
 
     var body: some View {
         GeometryReader { proxy in
