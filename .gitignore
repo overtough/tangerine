@@ -1,0 +1,6 @@
+.opencode/
+reverse-engineering/Tangerine.app/
+reports/generated/
+__pycache__/
+*.pyc
+.DS_Store
