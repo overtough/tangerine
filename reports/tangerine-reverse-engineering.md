@@ -691,9 +691,13 @@ remains for preview/testing outside an active drag.
 The Linux worker has no Swift/Xcode toolchain, so compilation cannot run in
 this worker. On October 20, 2026, the user-side Apple Silicon Mac completed
 both `swift build` and `swift run TangerineReplica` after the macOS 13
-availability fixes. This establishes native compilation on that Mac; no
-visual comparison, menu-bar observation, or representative conversion result
-was captured in that transcript.
+availability fixes. A subsequent user-provided `IMG_2776.MOV` recording shows
+the running reconstruction visibly highlighting the JPEG and MP4 petals while
+`test_no_author.pdf` is dragged, updating the center labels to `JPEG / Image
+conversion` and `MP4 / Video conversion`, and returning to the drag-ready state
+afterward. This establishes visual evidence for the corrected interaction on
+that Mac; it does not establish converter-backend output or exact visual parity
+with the original application.
 
 FFmpeg and cwebp carry sandbox-inherit entitlements. The embedded Java
 launcher carries sandbox inheritance plus `com.apple.security.cs.allow-jit`.
