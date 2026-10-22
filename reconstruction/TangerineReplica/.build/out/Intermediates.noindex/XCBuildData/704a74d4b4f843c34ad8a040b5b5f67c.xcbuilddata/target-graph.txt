@@ -1,0 +1,4 @@
+Target dependency graph (2 targets)
+Target 'AllExcludingTests' in project 'Aggregate'
+➜ Explicit dependency on target 'TangerineReplica-product' in project 'TangerineReplica'
+Target 'TangerineReplica-product' in project 'TangerineReplica' (no dependencies)

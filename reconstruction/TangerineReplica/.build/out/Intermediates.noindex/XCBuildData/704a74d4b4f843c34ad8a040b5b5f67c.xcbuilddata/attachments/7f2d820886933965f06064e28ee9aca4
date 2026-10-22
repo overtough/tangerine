@@ -1,0 +1,109 @@
+{
+  "" : {
+    "diagnostics" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/TangerineReplica-primary.dia",
+    "emit-module-dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/TangerineReplica-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/TangerineReplica-primary-emit-module.dia",
+    "pch" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/TangerineReplica-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/TangerineReplica-primary.swiftdeps"
+  },
+  "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/Sources/TangerineReplicaApp/ConversionOverlayController.swift" : {
+    "const-values" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/ConversionOverlayController.swiftconstvalues",
+    "dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/ConversionOverlayController.d",
+    "diagnostics" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/ConversionOverlayController.dia",
+    "index-unit-output-path" : "/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/ConversionOverlayController.o",
+    "llvm-bc" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/ConversionOverlayController.bc",
+    "object" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/ConversionOverlayController.o",
+    "swift-dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/ConversionOverlayController.swiftdeps",
+    "swiftmodule" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/ConversionOverlayController~partial.swiftmodule"
+  },
+  "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/Sources/TangerineReplicaApp/DragDestinationView.swift" : {
+    "const-values" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/DragDestinationView.swiftconstvalues",
+    "dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/DragDestinationView.d",
+    "diagnostics" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/DragDestinationView.dia",
+    "index-unit-output-path" : "/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/DragDestinationView.o",
+    "llvm-bc" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/DragDestinationView.bc",
+    "object" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/DragDestinationView.o",
+    "swift-dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/DragDestinationView.swiftdeps",
+    "swiftmodule" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/DragDestinationView~partial.swiftmodule"
+  },
+  "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/Sources/TangerineReplicaApp/DragGestureMonitor.swift" : {
+    "const-values" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/DragGestureMonitor.swiftconstvalues",
+    "dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/DragGestureMonitor.d",
+    "diagnostics" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/DragGestureMonitor.dia",
+    "index-unit-output-path" : "/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/DragGestureMonitor.o",
+    "llvm-bc" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/DragGestureMonitor.bc",
+    "object" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/DragGestureMonitor.o",
+    "swift-dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/DragGestureMonitor.swiftdeps",
+    "swiftmodule" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/DragGestureMonitor~partial.swiftmodule"
+  },
+  "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/Sources/TangerineReplicaApp/FanGeometry.swift" : {
+    "const-values" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/FanGeometry.swiftconstvalues",
+    "dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/FanGeometry.d",
+    "diagnostics" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/FanGeometry.dia",
+    "index-unit-output-path" : "/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/FanGeometry.o",
+    "llvm-bc" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/FanGeometry.bc",
+    "object" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/FanGeometry.o",
+    "swift-dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/FanGeometry.swiftdeps",
+    "swiftmodule" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/FanGeometry~partial.swiftmodule"
+  },
+  "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/Sources/TangerineReplicaApp/MainView.swift" : {
+    "const-values" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/MainView.swiftconstvalues",
+    "dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/MainView.d",
+    "diagnostics" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/MainView.dia",
+    "index-unit-output-path" : "/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/MainView.o",
+    "llvm-bc" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/MainView.bc",
+    "object" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/MainView.o",
+    "swift-dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/MainView.swiftdeps",
+    "swiftmodule" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/MainView~partial.swiftmodule"
+  },
+  "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/Sources/TangerineReplicaApp/MenuBarStatusView.swift" : {
+    "const-values" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/MenuBarStatusView.swiftconstvalues",
+    "dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/MenuBarStatusView.d",
+    "diagnostics" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/MenuBarStatusView.dia",
+    "index-unit-output-path" : "/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/MenuBarStatusView.o",
+    "llvm-bc" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/MenuBarStatusView.bc",
+    "object" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/MenuBarStatusView.o",
+    "swift-dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/MenuBarStatusView.swiftdeps",
+    "swiftmodule" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/MenuBarStatusView~partial.swiftmodule"
+  },
+  "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/Sources/TangerineReplicaApp/Models.swift" : {
+    "const-values" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/Models.swiftconstvalues",
+    "dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/Models.d",
+    "diagnostics" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/Models.dia",
+    "index-unit-output-path" : "/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/Models.o",
+    "llvm-bc" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/Models.bc",
+    "object" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/Models.o",
+    "swift-dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/Models.swiftdeps",
+    "swiftmodule" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/Models~partial.swiftmodule"
+  },
+  "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/Sources/TangerineReplicaApp/SettingsView.swift" : {
+    "const-values" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/SettingsView.swiftconstvalues",
+    "dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/SettingsView.d",
+    "diagnostics" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/SettingsView.dia",
+    "index-unit-output-path" : "/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/SettingsView.o",
+    "llvm-bc" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/SettingsView.bc",
+    "object" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/SettingsView.o",
+    "swift-dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/SettingsView.swiftdeps",
+    "swiftmodule" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/SettingsView~partial.swiftmodule"
+  },
+  "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/Sources/TangerineReplicaApp/StatusItemController.swift" : {
+    "const-values" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/StatusItemController.swiftconstvalues",
+    "dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/StatusItemController.d",
+    "diagnostics" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/StatusItemController.dia",
+    "index-unit-output-path" : "/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/StatusItemController.o",
+    "llvm-bc" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/StatusItemController.bc",
+    "object" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/StatusItemController.o",
+    "swift-dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/StatusItemController.swiftdeps",
+    "swiftmodule" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/StatusItemController~partial.swiftmodule"
+  },
+  "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/Sources/TangerineReplicaApp/TangerineReplicaApp.swift" : {
+    "const-values" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/TangerineReplicaApp.swiftconstvalues",
+    "dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/TangerineReplicaApp.d",
+    "diagnostics" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/TangerineReplicaApp.dia",
+    "index-unit-output-path" : "/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/TangerineReplicaApp.o",
+    "llvm-bc" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/TangerineReplicaApp.bc",
+    "object" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/TangerineReplicaApp.o",
+    "swift-dependencies" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/TangerineReplicaApp.swiftdeps",
+    "swiftmodule" : "/Users/anuragkrishnavennela/Projects/Tangerine/reconstruction/TangerineReplica/.build/out/Intermediates.noindex/TangerineReplica.build/Debug/TangerineReplica-p.build/Objects-normal/arm64/TangerineReplicaApp~partial.swiftmodule"
+  }
+}
